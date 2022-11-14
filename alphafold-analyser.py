@@ -54,17 +54,31 @@ def pae_plotter(pickle_input, output):
         prediction_result = pickle.load(data)
         data.close()
 
+        avg_plddt = prediction_result["plddt"].mean()
         #  plddt
+
         plt.figure(figsize=[8 * num_plots, 6])
         plt.subplot(1, num_plots, 1)
         plt.plot(prediction_result["plddt"])
-        plt.title("Predicted LDDT")
+        plt.title(
+            f"{os.path.splitext(pathlib.Path(pickle_input).name)[0]} Predicted LDDT"
+        )
         plt.xlabel("Residue")
         plt.ylabel("pLDDT")
+        plt.annotate(
+            f"Average pLDDT: {avg_plddt:.2f}",
+            (0, 0),
+            (0, -20),
+            xycoords="axes fraction",
+            textcoords="offset points",
+            va="top",
+        )
 
-        plddt_output = f"{output}/{pathlib.Path(pickle_input).name}_plddt.png"
+        plddt_output = (
+            f"{output}/{os.path.splitext(pathlib.Path(pickle_input).name)[0]}_plddt.png"
+        )
         plt.savefig(
-            plddt_output, dpi=1000, bbox_inches="tight"
+            plddt_output, dpi=300, bbox_inches="tight"
         )  # save plot to output directory
 
         plt.close()
