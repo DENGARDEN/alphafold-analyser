@@ -45,9 +45,9 @@ def plot_plddt_legend():
 
 # Create a PAE plot from the pkl file produced by AlphaFold - N.B code taken from AlphaFold CoLab
 # + plddt plot
-def pae_plotter(pickle_input, output):
+def pae_plotter(pickle_input:pathlib.Path, output):
     num_plots = 1  # for pLDDT plot only
-
+    pathlib.Path(output).mkdir(parents=True, exist_ok=True)
     try:
         # Load as a dictionary from pickle file
         data = open(pickle_input, "rb")
@@ -245,8 +245,8 @@ def cmd_lineparser():
             parser.error("ERROR: --pkl requires pkl file as input")
 
     # Check output directory exists
-    if not os.path.isdir(args.output):
-        parser.error("ERROR: Output directory not found")
+    # if not os.path.isdir(args.output):
+    #     parser.error("ERROR: Output directory not found")
 
     return args
 
@@ -266,15 +266,15 @@ def main():
 
     # for multiple pkl files, pick best model from each design sample
 
-    pkls = sorted(glob.glob(args.pkl_dir + "*.pkl"))
-    if len(pkls) == 0:
+    paths = sorted(pathlib.Path(args.pkl_dir).rglob( "*.pkl"))
+    if len(paths) == 0:
         print(
             " no pickle file provided, skipping predicted aligned error visualisation...\n"
         )
         exit(0)
-    for pkl in pkls:
+    for path in paths:
         print(" plotting predicted aligned error...")
-        pae_plotter(pkl, args.output)
+        pae_plotter(path, args.output)
 
     # Use pkl analysis only
     # if pkl structure provided, generate predicted aligned error plot
