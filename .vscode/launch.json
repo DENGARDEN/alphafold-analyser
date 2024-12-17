@@ -11,7 +11,13 @@
       "program": "${file}",
       "console": "integratedTerminal",
       "justMyCode": true,
-      "args": ["--output", "./output"]
+      "args": [
+        "--pkl_dir",
+        "/mnt/P41/Repositories/ProteinMPNN/AI_project/fixed_network_model[TYPE2]/AlphaFold/full/plddt/",
+        "--output",
+        "/mnt/P41/Repositories/alphafold-analyser/output/type2_full+overlapped/",
+        "--overlapped"
+      ]
     }
   ]
 }
